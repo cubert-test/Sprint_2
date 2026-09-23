@@ -1,41 +1,43 @@
 class PointsForPlace:
-    def __init__(self, points=0):
-        self.points = points
-
-    def get_points_for_place(self, place):
-
+    @staticmethod
+    def get_points_for_place(place):
         if place > 100:
-            return f"Баллы начисляются только первым 100 участникам"
+            return "Баллы начисляются только первым 100 участникам"
         elif place < 1:
-            return f"Спортсмен не может занять нулевое или отрицательное место"
+            return "Спортсмен не может занять нулевое или отрицательное место"
         else:
-           self.points = 101 - place
-           return self.points
+            return 101 - place
 
 
 class PointsForMeters:
-    def __init__(self, points=0):
-        self.points = points
-
-    def get_points_for_meters(self, meters):
-
+    @staticmethod
+    def get_points_for_meters(meters):
         if meters < 0:
-            return f"Количество метров не может быть отрицательным"
+            return "Количество метров не может быть отрицательным"
         else:
-            self.points = meters * 0.5
-            return int(self.points)
+            return int(meters * 0.5)
 
 class TotalPoints(PointsForPlace, PointsForMeters):
-    def __init__(self):
-        PointsForPlace.__init__(self, 0)
-        PointsForMeters.__init__(self, 0)
 
     def get_total_points(self, place, meters):
         points_place = self.get_points_for_place(place)
         points_meters = self.get_points_for_meters(meters)
 
+        if isinstance(points_place, str) or isinstance(points_meters, str):
+            error_msg = "Не удалось рассчитать итоговые баллы: "
+
+            if isinstance(points_place, str):
+                error_msg += points_place + ". "
+
+            if isinstance(points_meters, str):
+                error_msg += points_meters
+
+            return error_msg.strip()
+
         total = points_place + points_meters
         return total
+
+
 
 
 points_for_place = PointsForPlace()
