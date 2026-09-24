@@ -8,23 +8,25 @@ class EmployeeSalary:
         self.rest_day = rest_day
         self.email = email
 
-    def get_hours(self):
-        if self.hours is not None:
-            return self.hours
+    @classmethod
+    def get_hours(cls, employee_instance):
+        if employee_instance.hours is not None:
+            return employee_instance.hours
         else:
-            return (7 - self.rest_day) * 8
+            return (7 - employee_instance.rest_day) * 8
 
-    def get_email(self):
-        if self.email is not None:
-            return self.email
+    @classmethod
+    def get_email(cls, employee_instance):
+        if employee_instance.email is not None:
+            return employee_instance.email
         else:
-            return f"{self.name}@email.com"
+            return f"{employee_instance.name}@email.com"
 
     @classmethod
     def set_hourly_payment(cls, new_rate):
         cls.hourly_payment = new_rate
 
     def salary(self):
-        actual_hours = self.get_hours()
+        actual_hours = EmployeeSalary.get_hours(self)
         payment_rate = self.hourly_payment
         return actual_hours * payment_rate
